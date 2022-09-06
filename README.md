@@ -10,6 +10,7 @@ First, clone the repository to your computer and then open the program.
 Sub modules
 ---------------
 [Web app](https://github.com/fpmi-hci/proekt13-web-amazon-killers)
+
 [Mobile app](https://github.com/fpmi-hci/proekt13-mobile-amazon-killers)
 
 Usage
