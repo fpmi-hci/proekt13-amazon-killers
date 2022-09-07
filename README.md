@@ -28,7 +28,7 @@ Usage
 Name | Responsibilites
 ------------|-------------
    A.Bokun | Teamlead/iOS developer
-   E.Ermolaeva | Backend developer
+   Y.Yermolayeva | Backend developer
    A.Korostelyova | Web developer
    
  ### Our app:
