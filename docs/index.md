@@ -11,6 +11,6 @@ Create a game-changing web and mobile application for searching and buying book.
 
 ***
 _Structure:_
-[Presentation](/presentation.md)
+[Presentation](/proekt13-amazon-killers/presentation.md)
 
 
