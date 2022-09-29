@@ -28,7 +28,7 @@ jobs:
         with:
           name: xUnit Tests  
           artifact: test-results
-          path: '*.xml'
+          path: '*.trx'
           reporter: 'dotnet-trx'
         
   push_to_registry:
