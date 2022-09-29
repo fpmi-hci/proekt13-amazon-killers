@@ -20,9 +20,9 @@ jobs:
       - name: Install dependencies
         run: dotnet restore ./HelloWorld/HelloWorld/HelloWorld.csproj
       - name: Build
-        run: dotnet build
+        run: dotnet build ./HelloWorld/HelloWorld/HelloWorld.csproj
       - name: Test with the dotnet CLI
-        run: dotnet test
+        run: dotnet test ./HelloWorld/HelloWorldTests/HelloWorldTests.csproj
       - name: Test Reporter
         uses: dorny/test-reporter@v1.5.0
         
