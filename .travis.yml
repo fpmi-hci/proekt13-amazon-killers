@@ -1,0 +1,12 @@
+language: csharp
+
+services:  
+    - docker
+
+before_install:  
+    - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+
+script:  
+    - docker build --no-cache -t katyayermolayeva/amazon-killers
+    - docker tag katyayermolayeva/amazon-killers:newest katyayermolayeva/amazon-killers:v1
+    - docker push katyayermolayeva/amazon-killers
