@@ -12,6 +12,17 @@ Create a game-changing web and mobile application for searching and buying book.
 ***
 _Structure:_
 
-[Specification](https://fpmi-hci.github.io/proekt13-amazon-killers/specification.md)
+[Specification](https://fpmi-hci.github.io/proekt13-amazon-killers/specification.html)
+
+[Additional specification](https://fpmi-hci.github.io/proekt13-amazon-killers/additional-specification.html)
+
+[Database schema](https://fpmi-hci.github.io/proekt13-amazon-killers/database-schema.html)
+
+[Project's API](https://fpmi-hci.github.io/proekt13-amazon-killers/projects-api.html)
+
+[File diagram](https://fpmi-hci.github.io/proekt13-amazon-killers/file-diagram.html)
+
+[Presentation](https://fpmi-hci.github.io/proekt13-amazon-killers/presentation.html)
+
 
 
