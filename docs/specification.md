@@ -1,4 +1,6 @@
-#  Description
+# Specification
+
+##  Description
 ------------------
 💻 Using our application, you are provided with the following functionality:
 ----------------------------------------------------------------------------------------------------------- 
@@ -9,7 +11,7 @@
 5. 📰 Subscription to the publisher's news
 6. ❤ Add books to the "Favorites" section
 
-# Use case diagram
+## Use case diagram
 ![Use_case_1 drawio](https://user-images.githubusercontent.com/64005397/192287075-d21dcacb-fa90-419c-acae-fa2fc8f5c113.png)
 ![Use_case_2 drawio](https://user-images.githubusercontent.com/64005397/192287217-14e650a8-144d-4887-bca3-f6d7aa68c8c2.png)
 ![Use_case_3 drawio](https://user-images.githubusercontent.com/64005397/192287449-ed0e153f-0154-4aab-8af2-b503d6bb8428.png)
