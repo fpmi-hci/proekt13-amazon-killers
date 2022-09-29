@@ -27,7 +27,6 @@ jobs:
         uses: dorny/test-reporter@v1.5.0
         with:
           name: xUnit Tests  
-          artifact: test-results
           path: '/home/runner/work/proekt13-amazon-killers/proekt13-amazon-killers/HelloWorld/HelloWorldTests/TestResults/test-results.trx'
           path-replace-backslashes: 'true'
           reporter: 'dotnet-trx'
