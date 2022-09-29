@@ -29,6 +29,7 @@ jobs:
           name: xUnit Tests  
           artifact: test-results
           path: '/home/runner/work/proekt13-amazon-killers/proekt13-amazon-killers/HelloWorld/HelloWorldTests/TestResults/test-results.trx'
+          path-replace-backslashes: 'true'
           reporter: 'dotnet-trx'
         
   push_to_registry:
