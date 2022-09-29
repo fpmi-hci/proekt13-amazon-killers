@@ -12,5 +12,5 @@ RUN dotnet publish -c Release -o out
 
 FROM base AS final
 WORKDIR /app
-COPY --from=katyayermolayeva/amazon-killers /app/publish .
+COPY --from=publish /katyayermolayeva/amazon-killers .
 ENTRYPOINT ["dotnet", "HelloWorld.dll"]
