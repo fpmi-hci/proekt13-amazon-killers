@@ -22,11 +22,13 @@ jobs:
       - name: Build
         run: dotnet build ./HelloWorld/HelloWorld/HelloWorld.csproj
       - name: Test with the dotnet CLI
-        run: dotnet test ./HelloWorld/HelloWorldTests/HelloWorldTests.csproj
+        run: dotnet test --results-directory test-results ./HelloWorld/HelloWorldTests/HelloWorldTests.csproj 
       - name: Test Reporter
         uses: dorny/test-reporter@v1.5.0
         with:
           name: xUnit Tests  
+          artifact: test-results
+          path: '*.xml'
         
   push_to_registry:
     name: Push Docker image to Docker Hub
