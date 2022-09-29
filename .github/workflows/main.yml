@@ -22,7 +22,7 @@ jobs:
       - name: Build
         run: dotnet build ./HelloWorld/HelloWorld/HelloWorld.csproj
       - name: Test with the dotnet CLI
-        run: dotnet test --results-directory test-results ./HelloWorld/HelloWorldTests/HelloWorldTests.csproj 
+        run: dotnet test --logger "trx;LogFileName=test-results.trx" ./HelloWorld/HelloWorldTests/HelloWorldTests.csproj 
       - name: Test Reporter
         uses: dorny/test-reporter@v1.5.0
         with:
