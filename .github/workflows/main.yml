@@ -1,5 +1,4 @@
 name: CI
-
 on:
   push:
     branches: [ "main", "production" ]
@@ -90,5 +89,3 @@ jobs:
           heroku_email: "deadduck1513@gmail.com"
           usedocker: true
           appdir: "HelloWorld/HelloWorld"
-
-  
