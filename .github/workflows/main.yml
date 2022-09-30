@@ -92,9 +92,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          
-      - name: Install plugin 
-        run: heroku plugins:install heroku-container-tools
         
       - name: Pull image
         run: docker pull katyayermolayeva/amazon-killers:development
