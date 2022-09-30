@@ -9,5 +9,5 @@ RUN dotnet publish -c Release -o out
 
 FROM base AS final
 WORKDIR /app
-COPY --from=final /app/publish .
+COPY --from=base /app/publish .
 ENTRYPOINT ["dotnet", "HelloWorld.dll"]
