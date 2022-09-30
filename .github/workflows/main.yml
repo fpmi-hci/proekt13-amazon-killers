@@ -105,9 +105,6 @@ jobs:
       - name: Push image to Heroku
         run: docker push registry.heroku.com/amazon-killers/web
         
-      - name: Sign into Container Registry
-        run: heroku container:login
-        
       - name: Release  
         run: heroku container:release web --app amazon-killers
       
