@@ -82,6 +82,11 @@ jobs:
     needs: [test, push_to_registry]
     steps:
       - uses: actions/checkout@v2
+      - name: Login to Heroku Container registry
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login 
+      
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
