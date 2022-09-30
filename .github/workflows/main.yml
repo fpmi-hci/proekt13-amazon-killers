@@ -109,5 +109,5 @@ jobs:
         run: heroku container:login
         
       - name: Release  
-        run: heroku container:release web
+        run: heroku container:release web --app amazon-killers
       
