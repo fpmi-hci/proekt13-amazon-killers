@@ -83,7 +83,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Tag image
-        run: docker tag katyayermolayeva/amazon-killers registry.heroku.com/amazon-killers/web
+        run: docker tag katyayermolayeva/amazon-killers:development registry.heroku.com/amazon-killers/web
       - name: Push image to Heroku
         run: docker push registry.heroku.com/amazon-killers/web
       
