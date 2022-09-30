@@ -10,5 +10,5 @@ RUN dotnet publish -c Release -o out ./HelloWorld/HelloWorld/HelloWorld.csproj
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 WORKDIR /app
-COPY --from=base /app/publish .
+COPY --from=base /app/out .
 ENTRYPOINT ["dotnet", "HelloWorld.dll"]
