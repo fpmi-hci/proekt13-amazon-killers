@@ -5,7 +5,7 @@ EXPOSE 80
 EXPOSE 443
 
 COPY . ./
-RUN dotnet restore
+RUN dotnet restore ./HelloWorld
 RUN dotnet publish -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
