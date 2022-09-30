@@ -30,11 +30,12 @@ jobs:
           path: '**/test-results.trx'
           path-replace-backslashes: 'true'
           reporter: 'dotnet-trx'
+          fail-on-error: 'true'
         
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+    if: success()
     needs: [test]
     steps:
       - name: Check out the repo
@@ -67,8 +68,8 @@ jobs:
   publish_on_heroku:
     name: Publish Docker image on Heroku
     runs-on: ubuntu-latest
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
-    needs: [test, push_to_registry]
+    if: success()
+    needs: [test]
     steps:
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12
