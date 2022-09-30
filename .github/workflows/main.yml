@@ -101,4 +101,7 @@ jobs:
         
       - name: Push image to Heroku
         run: docker push registry.heroku.com/amazon-killers/web
+        
+      - name: Release  
+        run: heroku container:release web
       
