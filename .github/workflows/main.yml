@@ -82,14 +82,8 @@ jobs:
     needs: [test, push_to_registry]
     steps:
       - uses: actions/checkout@v2
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v3.0.0
-        with:
-          dotnet-version: '6.x'
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "amazon-killers" 
-          heroku_email: "deadduck1513@gmail.com"
-          usedocker: true
-          appdir: "HelloWorld/HelloWorld"
+      - name: Tag image
+        run: docker tag katyayermolayeva/amazon-killers registry.heroku.com/amazon-killers/web
+      - name: Push image to Heroku
+        run: docker push registry.heroku.com/amazon-killers/web
+      
