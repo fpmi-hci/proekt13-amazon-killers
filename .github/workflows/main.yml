@@ -69,7 +69,7 @@ jobs:
     name: Publish Docker image on Heroku
     runs-on: ubuntu-latest
     if: success()
-    needs: [test]
+    needs: [test, push_to_registry]
     steps:
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12
