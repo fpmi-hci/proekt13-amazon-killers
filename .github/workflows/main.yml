@@ -93,6 +93,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           
+      - name: Pull image
+        run: docker pull katyayermolayeva/amazon-killers:development
+        
       - name: Tag image
         run: docker tag katyayermolayeva/amazon-killers:development registry.heroku.com/amazon-killers/web
         
