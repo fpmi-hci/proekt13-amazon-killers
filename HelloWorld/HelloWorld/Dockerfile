@@ -6,7 +6,7 @@ EXPOSE 443
 
 COPY . ./
 RUN dotnet restore ./HelloWorld
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -o out ./HelloWorld/HelloWorld/HelloWorld.csproj
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 WORKDIR /app
