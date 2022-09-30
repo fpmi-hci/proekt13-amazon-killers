@@ -102,6 +102,8 @@ jobs:
       - name: Push image to Heroku
         run: docker push registry.heroku.com/amazon-killers/web
         
-      - name: Release  
+      - name: Release
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:release web --app amazon-killers
       
