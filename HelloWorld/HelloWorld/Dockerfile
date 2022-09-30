@@ -1,7 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS base
 
 WORKDIR /app
-EXPOSE 80
 
 COPY . ./
 RUN dotnet restore ./HelloWorld
