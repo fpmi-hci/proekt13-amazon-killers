@@ -89,7 +89,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           
       - name: Tag image
-        run: docker tag amazon-killers:development registry.heroku.com/amazon-killers/web
+        run: docker tag 729bfd22bfe8 registry.heroku.com/amazon-killers/web
       - name: Push image to Heroku
         run: docker push registry.heroku.com/amazon-killers/web
       
