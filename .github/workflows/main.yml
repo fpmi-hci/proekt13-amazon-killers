@@ -36,7 +36,13 @@ jobs:
           path-replace-backslashes: 'true'
           reporter: 'dotnet-trx'
           fail-on-error: 'true'
+         
+      - name: Install the Swashbuckle CLI tool   
+        run: dotnet add ./HelloWorld/HelloWorld/HelloWorld.csproj package Swashbuckle.AspNetCore -v 6.2.3
         
+      - name: Generate swagger.json
+        run: dotnet swagger tofile --output api.json ./HelloWorld/HelloWorld/bin/debug/netcoreapp6.0/HelloWorld.dll v1
+    
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
