@@ -10,6 +10,7 @@ namespace HelloWorld.Controllers
         {
         }
 
+        [HttpGet]
         public String Get()
         {
             return "Hello, World!";
