@@ -41,7 +41,7 @@ jobs:
         run: dotnet add ./HelloWorld/HelloWorld/HelloWorld.csproj package Swashbuckle.AspNetCore -v 6.2.3
         
       - name: Generate swagger.json
-        run: dotnet swagger tofile --output api.json ./HelloWorld/HelloWorld/bin/debug/netcoreapp6.0/HelloWorld.dll v1
+        run: swagger tofile --output swagger.json ./HelloWorld/HelloWorld/bin/debug/netcoreapp6.0/HelloWorld.dll v1
     
   push_to_registry:
     name: Push Docker image to Docker Hub
