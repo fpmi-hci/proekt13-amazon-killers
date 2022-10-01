@@ -37,8 +37,11 @@ jobs:
           reporter: 'dotnet-trx'
           fail-on-error: 'true'
          
-      - name: Install the Swashbuckle CLI tool   
-        run: dotnet add ./HelloWorld/HelloWorld/HelloWorld.csproj package Swashbuckle.AspNetCore -v 6.2.3
+      - name: Create tool manifest
+        run: dotnet new tool-manifest
+        
+      - name: Install the Swashbuckle CLI tool
+        run: dotnet tool install --version 5.3.1 Swashbuckle.AspNetCore.Cli
         
       - name: Generate swagger.json
         run: swagger tofile --output swagger.json ./HelloWorld/HelloWorld/bin/debug/netcoreapp6.0/HelloWorld.dll v1
