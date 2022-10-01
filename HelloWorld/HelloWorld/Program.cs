@@ -27,4 +27,5 @@ app.Run();
 namespace HelloWorld
 {
     public partial class Program { }
+    public partial class Startup { }
 }
