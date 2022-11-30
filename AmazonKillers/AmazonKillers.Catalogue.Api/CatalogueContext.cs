@@ -10,6 +10,7 @@ namespace AmazonKillers.Catalogue.Api
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,9 @@ namespace AmazonKillers.Catalogue.Api
             modelBuilder.Entity<Author>()
                 .ToTable("Authors");
 
+            modelBuilder.Entity<Comment>()
+                .ToTable("Comments");
+
             modelBuilder.Entity<Book>()
                 .HasMany(b => b.Categories)
                 .WithMany(c => c.Books)
@@ -36,6 +40,13 @@ namespace AmazonKillers.Catalogue.Api
                 .HasMany(b => b.Authors)
                 .WithMany(a => a.Books)
                 .UsingEntity(j => j.ToTable("BookAuthors"));
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Book)
+                .WithMany(b => b.Comments)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
 
             base.OnModelCreating(modelBuilder);
         }

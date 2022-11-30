@@ -50,7 +50,9 @@ namespace AmazonKillers.Catalogue.Api.Controllers
             [FromQuery] int[] publisherIds = null,
             [FromQuery] CoverStyle[] cs = null,
             [FromQuery] AvailabilityStatus[] avs = null,
-            [FromQuery] string search = "")
+            [FromQuery] string search = "",
+            [FromQuery] string sortingBy = "name",
+            [FromQuery] bool isDescending = false)
         {
             //var totalItems = await _context.Books.LongCountAsync();
             var booksOnPage = await _context.Books
@@ -67,6 +69,51 @@ namespace AmazonKillers.Catalogue.Api.Controllers
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
                 .ToListAsync();
+
+            switch(sortingBy)
+            {
+                case "name":
+                    if (isDescending)
+                    {
+                        booksOnPage.OrderByDescending(b => b.Name);
+                    }
+                    else
+                    {
+                        booksOnPage.OrderBy(b => b.Name);
+                    }
+                    break;
+                case "price":
+                    if (isDescending)
+                    {
+                        booksOnPage.OrderByDescending(b => b.Price);
+                    }
+                    else
+                    {
+                        booksOnPage.OrderBy(b => b.Price);
+                    }
+                    break;
+                case "pages":
+                    if (isDescending)
+                    {
+                        booksOnPage.OrderByDescending(b => b.Pages);
+                    }
+                    else
+                    {
+                        booksOnPage.OrderBy(b => b.Pages);
+                    }
+                    break;
+                case "year":
+                    if (isDescending)
+                    {
+                        booksOnPage.OrderByDescending(b => b.PublishingYear);
+                    }
+                    else
+                    {
+                        booksOnPage.OrderBy(b => b.PublishingYear);
+                    }
+                    break;
+            }
+
             return Ok(booksOnPage);
         }
 
@@ -149,6 +196,17 @@ namespace AmazonKillers.Catalogue.Api.Controllers
             var author = await _context.Authors
                 .FirstOrDefaultAsync(a => a.Id == id);
             return Ok(author);
+        }
+
+        [HttpGet]
+        [Route("authors")]
+        [ProducesResponseType(typeof(IEnumerable<Author>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> AuthorsAsync(int id)
+        {
+            var authors = await _context.Authors
+                .ToListAsync();
+            return Ok(authors);
         }
 
         [HttpPost]

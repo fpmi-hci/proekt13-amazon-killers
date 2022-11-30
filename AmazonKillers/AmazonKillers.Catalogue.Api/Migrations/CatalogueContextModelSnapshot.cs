@@ -88,8 +88,8 @@ namespace AmazonKillers.Catalogue.Api.Migrations
                     b.Property<int>("PublisherId")
                         .HasColumnType("integer");
 
-                    b.Property<DateOnly>("PublishingYear")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("PublishingYear")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -111,6 +111,38 @@ namespace AmazonKillers.Catalogue.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("AmazonKillers.Catalogue.Api.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("AuthorBook", b =>
@@ -143,6 +175,17 @@ namespace AmazonKillers.Catalogue.Api.Migrations
                     b.ToTable("BookCategories", (string)null);
                 });
 
+            modelBuilder.Entity("AmazonKillers.Catalogue.Api.Models.Comment", b =>
+                {
+                    b.HasOne("AmazonKillers.Catalogue.Api.Models.Book", "Book")
+                        .WithMany("Comments")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
             modelBuilder.Entity("AuthorBook", b =>
                 {
                     b.HasOne("AmazonKillers.Catalogue.Api.Models.Author", null)
@@ -171,6 +214,11 @@ namespace AmazonKillers.Catalogue.Api.Migrations
                         .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AmazonKillers.Catalogue.Api.Models.Book", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }
