@@ -159,5 +159,90 @@ namespace AmazonKillers.News.Api.Controllers
                 .ToListAsync();
             return Ok(subscriptions);
         }
+
+
+
+
+
+        //NEWS
+
+
+
+
+        [HttpGet]
+        [Route("news/{id:int}")]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Models.News), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> NewsByIdAsync(int id)
+        {
+            var news = await _context.News
+                .FirstOrDefaultAsync(p => p.Id == id);
+            return Ok(news);
+        }
+
+        [HttpPost]
+        [Route("news")]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<IActionResult> CreateNewsAsync(
+            [FromBody] Models.News news)
+        {
+            _context.News.Add(news);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(PublisherByIdAsync), new { id = news.Id }, null);
+        }
+
+        [HttpDelete]
+        [Route("news/{id}")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult> DeleteNewsAsync(int id)
+        {
+            var news = _context.News.SingleOrDefault(n => n.Id == id);
+            if (news == null)
+            {
+                return NotFound();
+            }
+            _context.News.Remove(news);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("news")]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<ActionResult> UpdateNewsAsync([FromBody] Models.News newsToUpdate)
+        {
+            var news = await _context.News.SingleOrDefaultAsync(p => p.Id == newsToUpdate.Id);
+            if (news == null)
+            {
+                return NotFound(new { Message = $"News with id {newsToUpdate.Id} not found." });
+            }
+            news = newsToUpdate;
+            _context.News.Update(news);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(NewsByIdAsync), new { id = newsToUpdate.Id }, null);
+        }
+
+        [HttpGet]
+        [Route("news")]
+        [ProducesResponseType(typeof(IEnumerable<Publisher>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> NewsAsync(
+            [FromQuery] int pageSize = 10,
+            [FromQuery] int pageIndex = 0,
+            [FromQuery] int[] publisherIds = null)
+        {
+            var newsOnPage = await _context.News
+                .Where(n => publisherIds == null || publisherIds.Contains(n.Publisher.Id))
+                .OrderByDescending(n => n.PublishingDate)
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(newsOnPage);
+        }
+
     }
 }
