@@ -138,10 +138,10 @@ namespace AmazonKillers.News.Api.Controllers
         }
 
         [HttpGet]
-        [Route("subscriptions")]
+        [Route("subscriptions/user/{userId}")]
         [ProducesResponseType(typeof(IEnumerable<Subscription>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> UserSubscriptionsAsync([FromQuery] string userId)
+        public async Task<IActionResult> UserSubscriptionsAsync(string userId)
         {
             var subscriptions = await _context.Subscriptions.Where(s => s.SubscriberId == userId)
                 .ToListAsync();
@@ -150,10 +150,10 @@ namespace AmazonKillers.News.Api.Controllers
 
 
         [HttpGet]
-        [Route("subscriptions")]
+        [Route("subscriptions/publisher/{publisherId:int}")]
         [ProducesResponseType(typeof(IEnumerable<Subscription>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> PublisherSubscribersAsync([FromQuery] int publisherId)
+        public async Task<IActionResult> PublisherSubscribersAsync(int publisherId)
         {
             var subscriptions = await _context.Subscriptions.Where(s => s.PublisherId == publisherId)
                 .ToListAsync();
