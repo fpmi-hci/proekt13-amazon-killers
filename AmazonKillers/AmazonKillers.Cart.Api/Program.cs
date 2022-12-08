@@ -1,4 +1,4 @@
-using AmazonKillers.Catalogue.Api;
+using AmazonKillers.Cart.Api;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
-builder.Services.AddEntityFrameworkNpgsql().AddDbContext<CatalogueContext>(options =>
+builder.Services.AddEntityFrameworkNpgsql().AddDbContext<CartContext>(options =>
            options.UseNpgsql(builder.Configuration.GetConnectionString("AmazonKillersDatabase")));
 
 builder.Services.AddControllers();
