@@ -32,6 +32,7 @@ namespace AmazonKillers.News.Api.Controllers
         public async Task<IActionResult> PublisherByIdAsync(int id)
         {
             var publisher = await _context.Publishers
+                .Include(p => p.News)
                 .FirstOrDefaultAsync(p => p.Id == id);
             return Ok(publisher);
         }
@@ -87,6 +88,7 @@ namespace AmazonKillers.News.Api.Controllers
         public async Task<IActionResult> PublishersAsync()
         {
             var publishers = await _context.Publishers
+                .Include(p => p.News)
                 .ToListAsync();
             return Ok(publishers);
         }
@@ -177,7 +179,8 @@ namespace AmazonKillers.News.Api.Controllers
         public async Task<IActionResult> NewsByIdAsync(int id)
         {
             var news = await _context.News
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .Include(n => n.Publisher)
+                .FirstOrDefaultAsync(n => n.Id == id);
             return Ok(news);
         }
 
@@ -235,6 +238,7 @@ namespace AmazonKillers.News.Api.Controllers
             [FromQuery] int[] publisherIds = null)
         {
             var newsOnPage = await _context.News
+                .Include(n => n.Publisher)
                 .Where(n => publisherIds == null || publisherIds.Contains(n.Publisher.Id))
                 .OrderByDescending(n => n.PublishingDate)
                 .Skip(pageSize * pageIndex)

@@ -56,16 +56,19 @@ namespace AmazonKillers.Catalogue.Api.Controllers
         {
             //var totalItems = await _context.Books.LongCountAsync();
             var booksOnPage = await _context.Books
+                .Include(b => b.Authors)
+                .Include(b => b.Categories)
+                .Include(b => b.Comments)
                 .Where(b => b.Name.Contains(search) || b.Annotation.Contains(search))
                 .Where(b => b.Pages >= minPages && b.Pages <= maxPages)
-                .Where(b => b.Price >= minPrice && b.Pages <= maxPrice)
-                .Where(b => cs == null || cs.Contains(b.CoverStyle))
-                .Where(b => avs == null || avs.Contains(b.Availability))
-                .Where(b => publisherIds == null || publisherIds.Contains(b.PublisherId))
-                .Where(b => authorIds == null || authorIds.Intersect(b.Authors.Select(a => a.Id)).Any())
-                .Where(b => categoryIds == null || categoryIds.Intersect(b.Categories.Select(c => c.Id)).Any())
-                .OrderByDescending(b => categoryIds.Intersect(b.Categories.Select(a => a.Id)).Count())
-                .OrderByDescending(b => authorIds.Intersect(b.Authors.Select(a => a.Id)).Count())
+                .Where(b => b.Price >= minPrice && b.Price <= maxPrice)
+                .Where(b => cs == null || cs.Length == 0 || cs.Contains(b.CoverStyle))
+                .Where(b => avs == null || avs.Length == 0 || avs.Contains(b.Availability))
+                .Where(b => publisherIds == null || publisherIds.Length == 0 || publisherIds.Contains(b.PublisherId))
+                .Where(b => authorIds == null || authorIds.Length == 0 || b.Authors.Any(a => authorIds.Contains(a.Id)))
+                .Where(b => categoryIds == null || categoryIds.Length == 0 || b.Categories.Any(c => categoryIds.Contains(c.Id)))
+                //.OrderByDescending(b => categoryIds.Intersect(b.Categories.Select(a => a.Id)).Count())
+                //.OrderByDescending(b => authorIds.Intersect(b.Authors.Select(a => a.Id)).Count())
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
                 .ToListAsync();
@@ -112,6 +115,16 @@ namespace AmazonKillers.Catalogue.Api.Controllers
                         booksOnPage.OrderBy(b => b.PublishingYear);
                     }
                     break;
+                case "rating":
+                    if (isDescending)
+                    {
+                        booksOnPage.OrderByDescending(b => b.Comments.Select(c => c.Rating).Average());
+                    }
+                    else
+                    {
+                        booksOnPage.OrderBy(b => b.Comments.Select(c => c.Rating).Average());
+                    }
+                    break;
             }
 
             return Ok(booksOnPage);
@@ -125,6 +138,9 @@ namespace AmazonKillers.Catalogue.Api.Controllers
         public async Task<IActionResult> BookByIdAsync(int id)
         {
             var book = await _context.Books
+                .Include(b => b.Authors)
+                .Include(b => b.Categories)
+                .Include(b => b.Comments)
                 .FirstOrDefaultAsync(b => b.Id == id);
             return Ok(book);
         }
@@ -194,6 +210,7 @@ namespace AmazonKillers.Catalogue.Api.Controllers
         public async Task<IActionResult> AuthorByIdAsync(int id)
         {
             var author = await _context.Authors
+                .Include(a => a.Books)
                 .FirstOrDefaultAsync(a => a.Id == id);
             return Ok(author);
         }
@@ -205,6 +222,7 @@ namespace AmazonKillers.Catalogue.Api.Controllers
         public async Task<IActionResult> AuthorsAsync(int id)
         {
             var authors = await _context.Authors
+                .Include(a => a.Books)
                 .ToListAsync();
             return Ok(authors);
         }
@@ -269,6 +287,7 @@ namespace AmazonKillers.Catalogue.Api.Controllers
         public async Task<IActionResult> CategoryByIdAsync(int id)
         {
             var category = await _context.Categories
+                .Include(c => c.Books)
                 .FirstOrDefaultAsync(c => c.Id == id);
             return Ok(category);
         }

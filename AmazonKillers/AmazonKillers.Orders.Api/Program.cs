@@ -1,4 +1,4 @@
-using AmazonKillers.News.Api;
+using AmazonKillers.Orders.Api;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
-builder.Services.AddEntityFrameworkNpgsql().AddDbContext<NewsContext>(options =>
+builder.Services.AddEntityFrameworkNpgsql().AddDbContext<OrdersContext>(options =>
            options.UseNpgsql(builder.Configuration.GetConnectionString("AmazonKillersDatabase")));
 
 builder.Services.AddControllers()
