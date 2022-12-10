@@ -1,3 +1,4 @@
+using AmazonKillers.Orders.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AmazonKillers.Orders.Api
@@ -6,26 +7,40 @@ namespace AmazonKillers.Orders.Api
     {
         public OrdersContext(DbContextOptions<OrdersContext> options) : base(options)
         { }
-        //public DbSet<CartItem> CartItems { get; set; }
-        //public DbSet<FavouriteItem> FavouriteItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Address> Addresses { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<CartItem>()
-        //        .ToTable("CartItems");
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Order>()
+                .ToTable("Orders");
 
-        //    modelBuilder.Entity<FavouriteItem>()
-        //        .ToTable("FavouriteItems");
+            modelBuilder.Entity<OrderItem>()
+                .ToTable("OrderItems");
 
-        //    modelBuilder.Entity<CartItem>()
-        //        .HasIndex(c => new { c.UserId, c.BookId })
-        //        .IsUnique(true);
+            modelBuilder.Entity<Address>()
+                .ToTable("Addresses");
 
-        //    modelBuilder.Entity<FavouriteItem>()
-        //        .HasIndex(f => new { f.UserId, f.BookId })
-        //        .IsUnique(true);
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(o => o.Order)
+                .WithMany(o => o.OrderItems)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
-        //    base.OnModelCreating(modelBuilder);
-        //}
+            modelBuilder.Entity<Order>()
+                .Property(o => o.DeliveryType)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.PaymentMethod)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.Status)
+                .HasConversion<string>();
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
