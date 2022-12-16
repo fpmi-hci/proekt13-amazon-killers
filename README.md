@@ -3,7 +3,7 @@ Description
 ------------------
 [⚡️Amazon Killers⚡️](https://docs.google.com/document/d/1Uat05_jr9F2NvNvgvIXrLx56zgy4ELho-74RudzuuG8/edit) Online bookstore. The program is designed for searching and buying books, as well as for pre-ordering books, adding them to favorites. The app offers a subscription to the publisher's news, user registration, adding a new product to the store's database.
 
-Instalation
+Installation
 ---------------
 First, clone the repository to your computer and then open the program.
 
@@ -32,3 +32,4 @@ Name | Responsibilites
    A.Korostelyova | Web developer
    
  ### Our app:
+[Presentation](https://docs.google.com/presentation/d/1YzF0zFIINrZiyWvw0G4ER7iRqaXFuRiI3wxGbVhV1Kg/edit?usp=sharing)
