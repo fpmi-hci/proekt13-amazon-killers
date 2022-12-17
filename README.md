@@ -20,8 +20,8 @@ Usage
 1. 📝 Register
 2. 🔓 Log in to the app with your username and password
 3. 🔎 Search for a book by author, subject and publisher
-4. 💸 Buying a book
-5. 📰 Subscription to the publisher's news
+4. 💸 Buy a book
+5. 📰 Subscribe to the publisher's news
 6. ❤ Add books to the "Favorites" section
 
 ### Contributing:
