@@ -1,0 +1,124 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "production" ]
+  pull_request:
+    branches: [ "main", "production" ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3.0.0
+        with:
+          dotnet-version: '6.x'
+          
+      - name: Install dependencies
+        run: dotnet restore ./HelloWorld/HelloWorld/HelloWorld.csproj
+        
+      - name: Build
+        run: dotnet build ./HelloWorld/HelloWorld/HelloWorld.csproj
+        
+      - name: Test with the dotnet CLI
+        run: dotnet test ./HelloWorld/HelloWorldTests/HelloWorldTests.csproj --logger "trx;LogFileName=test-results.trx"
+        
+      - name: Test Reporter
+        uses: dorny/test-reporter@v1.5.0
+        with:
+          name: xUnit Tests  
+          path: '**/test-results.trx'
+          path-replace-backslashes: 'true'
+          reporter: 'dotnet-trx'
+          fail-on-error: 'true'
+         
+      - name: Create tool manifest
+        run: dotnet new tool-manifest
+        
+      - name: Install the Swashbuckle CLI tool
+        run: dotnet tool install --version 5.3.1 Swashbuckle.AspNetCore.Cli
+        
+      - name: Generate swagger.json
+        run: dotnet swagger tofile --output swagger.json ./HelloWorld/HelloWorld/bin/Debug/net6.0/HelloWorld.dll v1
+        
+      - name: Archive file
+        uses: actions/upload-artifact@v3
+        with:
+          name: swagger.json
+          path: /home/runner/work/proekt13-amazon-killers/proekt13-amazon-killers/swagger.json
+    
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    if: success()
+    needs: [test]
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3.0.0
+        with:
+          dotnet-version: '6.x'
+          
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: katyayermolayeva/amazon-killers
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          file: HelloWorld/HelloWorld/Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          
+  publish_on_heroku:
+    name: Publish Docker image on Heroku
+    runs-on: ubuntu-latest
+    if: success()
+    needs: [test, push_to_registry]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Heroku Container registry
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login 
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        
+      - name: Pull image
+        run: docker pull katyayermolayeva/amazon-killers:development
+        
+      - name: Tag image
+        run: docker tag katyayermolayeva/amazon-killers:development registry.heroku.com/amazon-killers/web
+        
+      - name: Push image to Heroku
+        run: docker push registry.heroku.com/amazon-killers/web
+        
+      - name: Release
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release web --app amazon-killers
+      
